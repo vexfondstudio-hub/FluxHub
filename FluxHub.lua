@@ -161,23 +161,25 @@ local function LoadGameScript()
 			Status.TextColor3 = Color3.fromRGB(0, 255, 150)
 		end)
 
-		-- Fade out after 5 seconds
-		task.delay(5, function()
-			local fade = game:GetService("TweenService"):Create(
-				LoadingFrame,
-				TweenInfo.new(0.8, Enum.EasingStyle.Quad),
-				{BackgroundTransparency = 1}
-			)
-			fade:Play()
+		-- Fade out after 4 seconds
+		task.delay(4, function()
+			local TweenService = game:GetService("TweenService")
+			local fadeInfo = TweenInfo.new(0.8, Enum.EasingStyle.Quad, Enum.EasingDirection.Out)
+
+			TweenService:Create(LoadingFrame, fadeInfo, {BackgroundTransparency = 1}):Play()
+
 			for _, child in pairs(LoadingFrame:GetDescendants()) do
 				if child:IsA("GuiObject") then
-					game:GetService("TweenService"):Create(
-						child,
-						TweenInfo.new(0.8),
-						{BackgroundTransparency = 1, ImageTransparency = 1, TextTransparency = 1}
-					):Play()
+					if child:IsA("TextLabel") or child:IsA("TextButton") then
+						TweenService:Create(child, fadeInfo, {TextTransparency = 1, BackgroundTransparency = 1}):Play()
+					elseif child:IsA("ImageLabel") or child:IsA("ImageButton") then
+						TweenService:Create(child, fadeInfo, {ImageTransparency = 1, BackgroundTransparency = 1}):Play()
+					elseif child:IsA("Frame") then
+						TweenService:Create(child, fadeInfo, {BackgroundTransparency = 1}):Play()
+					end
 				end
 			end
+
 			task.wait(1)
 			LoadingGui:Destroy()
 		end)
@@ -201,25 +203,29 @@ local function LoadGameScript()
 	if success then
 		SetProgress(1, "Loaded successfully!")
 		Status.TextColor3 = Color3.fromRGB(0, 255, 150)
-		task.wait(0.8)
+		task.wait(1)
 
-		-- Fade out
-		local fade = game:GetService("TweenService"):Create(
-			LoadingFrame,
-			TweenInfo.new(0.6, Enum.EasingStyle.Quad),
-			{BackgroundTransparency = 1}
-		)
-		fade:Play()
+		-- Fade out everything properly
+		local TweenService = game:GetService("TweenService")
+		local fadeInfo = TweenInfo.new(0.8, Enum.EasingStyle.Quad, Enum.EasingDirection.Out)
+
+		-- Fade the main frame
+		TweenService:Create(LoadingFrame, fadeInfo, {BackgroundTransparency = 1}):Play()
+
+		-- Fade all descendants
 		for _, child in pairs(LoadingFrame:GetDescendants()) do
 			if child:IsA("GuiObject") then
-				game:GetService("TweenService"):Create(
-					child,
-					TweenInfo.new(0.6),
-					{BackgroundTransparency = 1, ImageTransparency = 1, TextTransparency = 1}
-				):Play()
+				if child:IsA("TextLabel") or child:IsA("TextButton") then
+					TweenService:Create(child, fadeInfo, {TextTransparency = 1, BackgroundTransparency = 1}):Play()
+				elseif child:IsA("ImageLabel") or child:IsA("ImageButton") then
+					TweenService:Create(child, fadeInfo, {ImageTransparency = 1, BackgroundTransparency = 1}):Play()
+				elseif child:IsA("Frame") then
+					TweenService:Create(child, fadeInfo, {BackgroundTransparency = 1}):Play()
+				end
 			end
 		end
-		task.wait(0.8)
+
+		task.wait(1)
 		LoadingGui:Destroy()
 	else
 		SetProgress(0.5, "Failed to load script!")
@@ -227,7 +233,25 @@ local function LoadGameScript()
 		Subtitle.Text = tostring(err):sub(1, 50)
 		Subtitle.TextColor3 = Color3.fromRGB(255, 100, 100)
 
-		task.delay(4, function()
+		task.delay(3, function()
+			local TweenService = game:GetService("TweenService")
+			local fadeInfo = TweenInfo.new(0.6, Enum.EasingStyle.Quad, Enum.EasingDirection.Out)
+
+			TweenService:Create(LoadingFrame, fadeInfo, {BackgroundTransparency = 1}):Play()
+
+			for _, child in pairs(LoadingFrame:GetDescendants()) do
+				if child:IsA("GuiObject") then
+					if child:IsA("TextLabel") or child:IsA("TextButton") then
+						TweenService:Create(child, fadeInfo, {TextTransparency = 1, BackgroundTransparency = 1}):Play()
+					elseif child:IsA("ImageLabel") or child:IsA("ImageButton") then
+						TweenService:Create(child, fadeInfo, {ImageTransparency = 1, BackgroundTransparency = 1}):Play()
+					elseif child:IsA("Frame") then
+						TweenService:Create(child, fadeInfo, {BackgroundTransparency = 1}):Play()
+					end
+				end
+			end
+
+			task.wait(0.8)
 			LoadingGui:Destroy()
 		end)
 	end
