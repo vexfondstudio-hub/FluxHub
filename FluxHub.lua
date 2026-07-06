@@ -14,6 +14,11 @@ local GameDB = {
 		Script = "https://raw.githubusercontent.com/vexfondstudio-hub/FluxHub/refs/heads/main/MM2.lua",
 		Icon = "sword",
 	},
+	[95082159892680] = {
+		Name = "+1 Speed Keyboard Escape",
+		Script = "https://raw.githubusercontent.com/vexfondstudio-hub/FluxHub/refs/heads/main/%2B1Speed.lua",
+		Icon = "zap",
+	},
 	-- Add more games here:
 	-- [gameId] = { Name = "Game Name", Script = "url", Icon = "icon" },
 }
